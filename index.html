@@ -26,8 +26,8 @@
 						</ul>
 		
 						<div class="text-end">
-							<button type="button" class="btn btn-outline-light me-2">Ingresar</button>
-							<button type="button" class="btn btn-warning"  data-bs-toggle="modal" data-bs-target="#modalRegister">Registrarme</button>
+							<button type="button" class="btn btn-outline-light me-2" data-bs-toggle="modal" data-bs-target="#modalAuth" data-action-form="login">Ingresar</button>
+							<button type="button" class="btn btn-warning"  data-bs-toggle="modal" data-bs-target="#modalAuth" data-action-form="register">Registrarme</button>
 						</div>
 					</div>
 				</div>
@@ -35,11 +35,11 @@
 		<main>
 				<div class="b-example-divider"></div>
 
-				<div class="modal fade" id="modalRegister" tabindex="-1" aria-labelledby="modalRegisterLabel" aria-hidden="true">
+				<div class="modal fade" id="modalAuth" tabindex="-1" aria-labelledby="modalAuthLabel" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="modalRegisterLabel">Registrarse</h5>
+								<h5 class="modal-title" id="modalAuthLabel"></h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
@@ -61,7 +61,7 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
-								<button id="btn-register" type="button" class="btn btn-primary">Registrarme</button>
+								<button id="btn-action" type="button" class="btn btn-primary"></button>
 							</div>
 						</div>
 					</div>
