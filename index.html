@@ -43,15 +43,20 @@
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
+								<div class="error-msg">
+									<span class="span-error" id="error-auth">
+
+									</span>
+								</div>
 								<form action="#">
 									<div class="mb-3">
-										<label for="emailRegister" class="form-label">Email</label>
-										<input type="email" class="form-control" id="emailRegister" aria-describedby="emailHelp" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+										<label for="email" class="form-label">Email</label>
+										<input type="email" class="form-control form-control-auth" id="email" aria-describedby="emailHelp" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
 										<div id="emailHelp" class="form-text"></div>
 									</div>
 									<div class="mb-3">
-										<label for="passwordRegister" class="form-label">Contraseña</label>
-										<input type="password" class="form-control" id="passwordRegister">
+										<label for="password" class="form-label">Contraseña</label>
+										<input type="password" class="form-control form-control-auth" id="password">
 									</div>
 									<div class="mb-3 form-check">
 										<input type="checkbox" class="form-check-input" id="exampleCheck1">
