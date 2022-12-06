@@ -91,21 +91,41 @@ function showError(err) {
   //vamos colorear en rojo los input
 }
 
+function showMsgAuth(status = 'info' ,msg ='Error en Autenticación'){
+  let bgCustom = 'linear-gradient(to bottom, #833ab4, #fd1d1d, #fcb045)';
+  
+  Toastify({
+    text: msg,
+    duration: 3000,
+    destination: "https://incone.edu.ar",
+    newWindow: true,
+    close: true,
+    gravity: "top", // `top` or `bottom`
+    position: "center", // `left`, `center` or `right`
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    style: {
+      background: bgCustom,
+    },
+    onClick: function(){} // Callback after click
+  }).showToast();
+}
+
 function getErrorMsg(code) {
   console.log(code);
   let msg;
 
   switch (code) {
-    case 400:
+    case 'auth/user-not-found':
       msg = 'Usuario no registrado';
       break;
-    case 401:
-      msg = 'Credenciales invlidas';
+    case 'auth/wrong-password':
+      msg = 'Credenciales inválidas';
       break;
+    case 'auth/missing-app-credential':
     default:
       msg = 'Fallo en Autenticación';
   }
-
+  showMsgAuth();
   return msg;
 }
 
