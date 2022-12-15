@@ -38,3 +38,7 @@
     color: #e74c3c;
     font-weight: 600;
   }
+
+  .btn-auth {
+    display: none;
+  }

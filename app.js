@@ -3,11 +3,12 @@ import {
   getAuth, 
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword 
+  createUserWithEmailAndPassword,
+  signOut
 } from "https://www.gstatic.com/firebasejs/9.12.1/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "",
+  apiKey: "AIzaSyCRIuh5ai7pqHl2vzdn3GuIgSrCPp8cF_s",
   authDomain: "crud-incone-22.firebaseapp.com",
   projectId: "crud-incone-22",
   storageBucket: "crud-incone-22.appspot.com",
@@ -24,27 +25,20 @@ function registerUser( email, password){
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
+        let welcome = `Bienvenido ${user.email}`;
+        showMsgAuth('ok', welcome);
+        modalInstance.hide();
       })
       .catch((error) => {
         console.log(error);
         const errorCode = error.code;
-        const errorMessage = error.message;
+        const errorMessage = getErrorMsg(errorCode);
+        showMsgAuth('error', errorMessage);
     });
 }
 
-//const btnRegister = document.getElementById('btn-register');
-/*btnRegister.addEventListener('click', ()=>{
-  let useremail = document.getElementById('emailRegister').value;
-  let password = document.getElementById('passwordRegister').value;
-
-  if(useremail.length > 0 && password.length > 0){
-    registerUser(useremail, password);
-  } else {
-    console.log('uno de los campos esta vacio');
-  }
-
-
-});*/
+const btnIsLogOut = document.querySelectorAll('.logged-out');
+const btnIsLogIn = document.querySelectorAll('.logged-in');
 
 function checkSession() {
   //verificamos si tiene sesion activa
@@ -52,11 +46,16 @@ function checkSession() {
     if (user) {
       const uid = user.uid;
       console.log(JSON.stringify(user));
+      btnIsLogOut.forEach( btn => btn.style.display = 'none');
+      btnIsLogIn.forEach( btn => btn.style.display = 'block');
     } else {
       console.log('no logueado');
+      btnIsLogOut.forEach( btn => btn.style.display = 'block');
+      btnIsLogIn.forEach( btn => btn.style.display = 'none');
     }
   });
 }
+checkSession();
 
 function login(email, password){
   signInWithEmailAndPassword(auth, email, password)
@@ -65,20 +64,28 @@ function login(email, password){
     const user = userCredential.user;
     // mostrariamos la interfaz de usuario logueado
     console.log(user);
-    // ...
+    let welcome = `Bienvenido de nuevo ${user.email}`;
+    showMsgAuth('ok', welcome);
+    modalInstance.hide();
   })
   .catch((error) => {
     console.log(error);
     const errorCode = error.code;
-    console.log(errorCode);
-    const errorMessage = error.message;
-    //aca deberia pasar algo
-    showError(errorMessage);
+    const errorMessage = getErrorMsg(errorCode);
+    showMsgAuth('error', errorMessage);
 
   });
 }
 
+function logout() {
+  signOut(auth).then(() => {
+    showMsgAuth('info', 'Hasta luego...😀');
+  }).catch(error => {
+    console.log('Fallo al cerrar sesion');
+  })
+}
 
+document.getElementById('btn-logout').addEventListener('click', logout);
 
 function showError(err) {
   let inputsError = document.querySelectorAll('.form-control-auth');
@@ -92,8 +99,25 @@ function showError(err) {
 }
 
 function showMsgAuth(status = 'info' ,msg ='Error en Autenticación'){
-  let bgCustom = 'linear-gradient(to bottom, #833ab4, #fd1d1d, #fcb045)';
+  let bgCustom = '#3498db';
   
+  switch (status) {
+    case 'error':
+      bgCustom = '#ff4d4f';
+      break;
+    case 'ok':
+      bgCustom = '#2ecc71';
+      break;
+    case 'warning':
+      bgCustom = '#ffc107';
+      break;
+    case 'info':
+    default:
+      bgCustom = '#3498db';
+      break;
+  }
+
+
   Toastify({
     text: msg,
     duration: 3000,
@@ -111,7 +135,6 @@ function showMsgAuth(status = 'info' ,msg ='Error en Autenticación'){
 }
 
 function getErrorMsg(code) {
-  console.log(code);
   let msg;
 
   switch (code) {
@@ -125,7 +148,6 @@ function getErrorMsg(code) {
     default:
       msg = 'Fallo en Autenticación';
   }
-  showMsgAuth();
   return msg;
 }
 
@@ -163,6 +185,7 @@ function validateField(field = '', type){
   return {status, msg};
 }
 const modalAuth = document.getElementById('modalAuth');
+const modalInstance = new bootstrap.Modal(modalAuth);
 const btnAction = modalAuth.querySelector('#btn-action');
 let action = null;
 modalAuth.addEventListener('show.bs.modal', (event) =>{
@@ -187,7 +210,8 @@ btnAction.addEventListener('click', (event) => {
     sendRequest(email, password);
   } else {
     console.log('fallo validacion '+ validateMail.msg + validatePassword.msg);
-
+    let msj = validateMail.msg + validatePassword.msg;
+    showMsgAuth('error', msj);
   }
 
 })
